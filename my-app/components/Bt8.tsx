@@ -1,94 +1,49 @@
 "use client";
-
 import React, { useState } from "react";
 import styles from "./Bt8.module.css";
+import classNames from "classnames";
 
-export default function Bt8() {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+const Bt8 = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 20;
 
-  const handlePageChange = (newPage: number) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
     }
   };
 
-  const renderPaginationButtons = () => {
-    const pageButtons: JSX.Element[] = [];
-    const delta = 2;
-
-    Array.from({ length: totalPages }, (_, i) => i + 1).forEach((i) => {
-      if (
-        i === 1 ||
-        i === totalPages ||
-        (i >= currentPage - delta && i <= currentPage + delta)
-      ) {
-        pageButtons.push(
-          <a
-            key={i}
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handlePageChange(i);
-            }}
-            className={`${styles.pageButton} ${
-              currentPage === i
-                ? styles.pageButtonActive
-                : styles.pageButtonInactive
-            }`}
-          >
-            {i}
-          </a>
-        );
-      } else if (
-        i === currentPage - delta - 1 ||
-        i === currentPage + delta + 1
-      ) {
-        pageButtons.push(
-          <span key={i} className={styles.ellipsis}>
-            ...
-          </span>
-        );
-      }
-    });
-
-    return pageButtons;
-  };
-
   return (
-    <div className={styles.container}>
-      <div className={styles.paginationWrapper}>
-        <div className={styles.pageInfo}>
-          <span className={styles.pageInfoText}>
-            Trang {currentPage} / {totalPages}
-          </span>
-        </div>
-        <div className={styles.buttonGroup}>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={`${styles.arrowButton} ${
-              currentPage === 1
-                ? styles.arrowButtonDisabled
-                : styles.arrowButtonEnabled
-            }`}
-          >
-            &lt;
-          </button>
-          {renderPaginationButtons()}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={`${styles.arrowButton} ${
-              currentPage === totalPages
-                ? styles.arrowButtonDisabled
-                : styles.arrowButtonEnabled
-            }`}
-          >
-            &gt;
-          </button>
-        </div>
-      </div>
-    </div>
+    <ul className={styles.pagination}>
+      <li
+        className={classNames(styles.pageItem, {
+          [styles.disabled]: currentPage === 1,
+        })}
+        onClick={() => handlePageChange(currentPage - 1)}
+      >
+        Prev
+      </li>
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <li
+          key={page}
+          className={classNames(styles.pageItem, {
+            [styles.active]: currentPage === page,
+          })}
+          onClick={() => handlePageChange(page)}
+        >
+          {page}
+        </li>
+      ))}
+      <li
+        className={classNames(styles.pageItem, {
+          [styles.disabled]: currentPage === totalPages,
+        })}
+        onClick={() => handlePageChange(currentPage + 1)}
+      >
+        Next
+      </li>
+    </ul>
   );
-}
+};
+
+export default Bt8;
