@@ -1,7 +1,6 @@
 "use client";
+
 import React, { useState } from "react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Bt8.module.css";
 
 export default function Bt8() {
@@ -15,10 +14,10 @@ export default function Bt8() {
   };
 
   const renderPaginationButtons = () => {
-    const pageButtons = [];
+    const pageButtons: JSX.Element[] = [];
     const delta = 2;
 
-    for (let i = 1; i <= totalPages; i++) {
+    Array.from({ length: totalPages }, (_, i) => i + 1).forEach((i) => {
       if (
         i === 1 ||
         i === totalPages ||
@@ -51,7 +50,7 @@ export default function Bt8() {
           </span>
         );
       }
-    }
+    });
 
     return pageButtons;
   };
@@ -74,7 +73,7 @@ export default function Bt8() {
                 : styles.arrowButtonEnabled
             }`}
           >
-            {/* <FontAwesomeIcon icon={faArrowLeft} className="w-5 h-5" /> */}
+            &lt;
           </button>
           {renderPaginationButtons()}
           <button
@@ -86,7 +85,7 @@ export default function Bt8() {
                 : styles.arrowButtonEnabled
             }`}
           >
-            {/* <FontAwesomeIcon icon={faArrowRight} className="w-5 h-5" /> */}
+            &gt;
           </button>
         </div>
       </div>
